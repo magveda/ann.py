@@ -1,0 +1,12 @@
+/*
+	FOUNDATION FIXAI
+*/
+html, body { font-size: 90% !important;}
+body
+{
+	font-family: verdana;
+	line-height: 1;
+}
+.row { max-width: 72.5rem; }
+.row.extramargin {margin: 50px auto 10px !important;}
+.extramargin {margin: 50px auto 10px !important;}
