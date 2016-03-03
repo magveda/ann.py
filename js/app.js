@@ -104,7 +104,7 @@ $(function()
 			} else
 			{
 				draw_box[image_index].show();
-				console.log('draw_box.shof: ' + image_index);
+				console.log('draw_box.show: ' + image_index);
 			}
 			
 			if (draw_box[current_image]) { draw_box[current_image].hide(); }
@@ -123,8 +123,6 @@ $(function()
 			console.log( "naturalWidth" );
 			console.log( $("#target").width() );
 			console.log( $("#target").height() );
-			
-			// jcrop_api.setImage('ann_img?path=' + the_json[current_image].file);
 			
 			if ( !jQuery.isEmptyObject( the_json[current_image].boxes ) )
 			{

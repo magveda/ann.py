@@ -46,6 +46,13 @@ Example annotations.json file:
 
 ## TODO:
 
+### GUI
+
+* Add aspect ratio functionality
+
+### CLI
+
 * Add option to append new image files to existing json list:
  * `python ann.py -i ../../datasets/sareme/20140429 -a sareme.json`
 * Add only unique images to the list
+* Add option to save in dlib compatible XML format

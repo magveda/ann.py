@@ -181,7 +181,8 @@ function CanvasState(canvas)
 					mx = mouse.x,
 					my = mouse.y,
 					oldx, oldy, i, cur;
-			if (myState.dragging){
+			if (myState.dragging)
+			{
 				mouse = myState.getMouse(e);
 				// We don't want to drag the object by its top-left corner, we want to drag it
 				// from where we clicked. Thats why we saved the offset and use it here
@@ -240,8 +241,10 @@ function CanvasState(canvas)
 		
 	
 			// if there's a selection see if we grabbed one of the selection handles
-			if (myState.selection !== null && !myState.resizeDragging) {
-				for (i = 0; i < 8; i += 1) {
+			if (myState.selection !== null && !myState.resizeDragging)
+			{
+				for (i = 0; i < 8; i += 1)
+				{
 					// 0  1  2
 					// 3     4
 					// 5  6  7
@@ -281,6 +284,8 @@ function CanvasState(canvas)
 							case 7:
 								this.style.cursor='se-resize';
 								break;
+							// default:
+							// 	this.style.cursor='move';
 						}
 						return;
 					}
@@ -290,6 +295,17 @@ function CanvasState(canvas)
 				myState.resizeDragging = false;
 				myState.expectResize = -1;
 				this.style.cursor = 'auto';
+			} else
+			{ // no selection
+				
+			}
+			
+			// if not over the drag handles, but over the selection box - change the icon to move
+			if (
+				mx > myState.selection.x && my > myState.selection.y &&
+				mx < myState.selection.x+myState.selection.w && my < myState.selection.y+myState.selection.h  )
+			{
+				this.style.cursor='move';
 			}
 		}
 	}, true);
@@ -365,7 +381,7 @@ CanvasState.prototype.removeShape = function(shape)
 	this.selection = null;
 	this.shapes.splice(the_index, 1);
 	this.valid = false;
-	
+	this.canvas.style.cursor = 'auto';
 	this.onChange( this.shapes, this.selection );
 };
 
