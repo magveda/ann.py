@@ -1,11 +1,10 @@
-
-
 from flask import Flask, send_from_directory, render_template, jsonify, request
 import argparse
 import os.path
 import json
 import glob
-import cv2
+from lxml import etree
+# import cv2
 
 # ARGUMENTS
 ap = argparse.ArgumentParser(description='Image annotation tool.')
@@ -21,13 +20,32 @@ the_json = []
 
 
 if args['create']:
+	json_file_path = args['create']
+	
+	exists = False
+	
+	# check if file exists
+	if os.path.isfile( json_file_path ):
+		print ("[WARNING] output file exists - only appending new files")
+		with open( json_file_path ) as data_file:    
+			the_json = json.load(data_file)
+	
 	for image_file in glob.glob( os.path.join(args['images'], "*") ):
 	# for image_file in glob.glob( os.path.join(args['images'], "*.jpg") ):
 		image_path = os.path.abspath( image_file )
-		print("Processing file: {}".format(image_path))
-		image = cv2.imread(image_path)
-		(h, w) = image.shape[:2]
-		the_json.append({'file': image_path, 'boxes':[]})
+		print("[INFO] Processing file: {}".format(image_path))
+		
+		flag = False
+		for check_file in the_json:
+			if check_file['file'] == image_path:
+				flag = True
+				break
+		if not flag:
+			print("[INFO] appending... " )
+			the_json.append({'file': image_path, 'boxes':[]})
+		
+		# image = cv2.imread(image_path)
+		# (h, w) = image.shape[:2]
 		# the_json.append({'file': image_path, 'box':{'x': 0, 'y': 0, 'x2': w, 'y2': h, 'w': w, 'h': h}})
 		# the_json.append({'file': image_path, 'boxes':[{'x':0, 'y': 0, 'x2':10, 'y2':10}]})
 		
@@ -35,7 +53,7 @@ if args['create']:
 	# print(json.dumps(the_json, sort_keys=True, indent=4, separators=(',', ': ')))
 
 	# Write JSON
-	with open(args['create'], 'w') as f:
+	with open(json_file_path, 'w') as f:
 		json.dump(the_json, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 else:
@@ -53,11 +71,29 @@ else:
 		return json.dumps(the_json)
 		
 	@app.route('/save_json', methods=['GET', 'POST'])
-	def add_message():
+	def save_json():
+		
+		# SAVE JSON
 		the_json = request.json
 		# print the_json
 		with open(args['edit'], 'w') as f:
 			json.dump(the_json, f, sort_keys=True, indent=4, separators=(',', ': '))
+		
+		# SAVE XML
+		dataset = etree.Element("dataset")
+		images = etree.SubElement(dataset, "images")
+		for annotation in the_json:
+			image = etree.SubElement(images, "image", file=annotation['file'])
+			if annotation['boxes']:
+				for box in annotation['boxes']:
+					x = int(box['x'])
+					y = int(box['y'])
+					w = int(box['w'])
+					h = int(box['h'])
+					box = etree.SubElement( image, "box", top=str(y), left=str(x), width=str(w), height=str(h) )
+		tree = etree.ElementTree(dataset)
+		xml_filename = os.path.splitext( args['edit'] )[0] + ".xml"
+		tree.write(xml_filename, pretty_print=True)
 		return "success"
 		
 		

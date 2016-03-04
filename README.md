@@ -43,16 +43,36 @@ Example annotations.json file:
 	    }
 	]
 ```
+## Dependencies
 
-## TODO:
+On Centos 7:
+
+```bash
+	pip install Flask
+	pip install argparse
+	yum install -y python-lxml
+```
+
+## Changelog
+
+<!-- https://github.com/olivierlacan/keep-a-changelog -->
+
+* 2016-03-02
+ * `added` feature: if provided json file for creation already exists, the script only appends new files if found
+ * `added` feature: the script creates `XML` file with the same name, that is compatible for using with [`dlib`](https://github.com/davisking/dlib)
+ * `fixed` image resizing when going back with key `k`
+* 2016-03-01
+ * `added` icon "move", when hovering selected feature
+
+## TODO
 
 ### GUI
 
 * Add aspect ratio functionality
 
-### CLI
+<!-- ### CLI
 
 * Add option to append new image files to existing json list:
  * `python ann.py -i ../../datasets/sareme/20140429 -a sareme.json`
 * Add only unique images to the list
-* Add option to save in dlib compatible XML format
+* Add option to save in dlib compatible XML format -->

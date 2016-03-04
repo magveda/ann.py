@@ -74,7 +74,7 @@ $(function()
 		if (image_index != current_image)
 		{
 			if (!draw_box[image_index])
-			{
+			{// going to new image
 				var img = new Image();
 				var url = the_json[image_index].file;
 				img.onload = function()
@@ -86,7 +86,7 @@ $(function()
 					var ctx = $("#canvas1")[0].getContext('2d');
 					ctx.canvas.height = this.height;
 					ctx.canvas.width = this.width;
-					$("#canvas1").height(this.height).width(this.width);
+					// $("#canvas1").height(this.height).width(this.width);
 					//  imgdiv.append(this);
 					
 					draw_box[image_index] = new CanvasState(document.getElementById('canvas1'));
@@ -102,14 +102,20 @@ $(function()
 			
 				
 			} else
-			{
+			{// going to old image
+				
+				$("#target").height(draw_box[image_index].height).width(draw_box[image_index].width);
+				var ctx = $("#canvas1")[0].getContext('2d');
+				ctx.canvas.height = draw_box[image_index].height;
+				ctx.canvas.width = draw_box[image_index].width;
+					
 				draw_box[image_index].show();
-				console.log('draw_box.show: ' + image_index);
+				// console.log('draw_box.show: ' + image_index);
 			}
 			
 			if (draw_box[current_image]) { draw_box[current_image].hide(); }
 			
-			console.log(draw_box);
+			// console.log(draw_box);
 			
 			$( "ul#files-container li:nth-child("+(current_image+1)+")" ).removeClass( "active" );
 			
@@ -120,9 +126,9 @@ $(function()
 			
 			
 			
-			console.log( "naturalWidth" );
-			console.log( $("#target").width() );
-			console.log( $("#target").height() );
+			// console.log( "naturalWidth" );
+			// console.log( $("#target").width() );
+			// console.log( $("#target").height() );
 			
 			if ( !jQuery.isEmptyObject( the_json[current_image].boxes ) )
 			{
