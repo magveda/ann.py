@@ -118,10 +118,17 @@ else:
 		print ("[INFO] requested image file: {}".format(the_path))
 		
 		(path, file) = os.path.split(the_path)
-		print path, file
+		# print path, file
+		# response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+		# response.headers['Pragma'] = 'no-cache'
+
 		return send_from_directory(path, file)
 
-
+	@app.after_request
+	def add_header(response):
+		response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+		response.headers['Pragma'] = 'no-cache'
+		return response
 
 
 	if __name__ == "__main__":

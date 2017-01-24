@@ -23,7 +23,7 @@ $(function()
 		$('#info').text('');
 	};
 	
-	// image looping
+	// navigating in image list
 	$(document).on("keydown", function(e)
 	{
 		if (e.which == 74)
@@ -97,10 +97,10 @@ $(function()
 					}
 					draw_boxes(image_index);
 				}
-				img.src = 'ann_img?path=' + url;
+				img.src = 'ann_img?path=' + url + '&opa=' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 			
 			
-				
+			
 			} else
 			{// going to old image
 				
@@ -121,7 +121,7 @@ $(function()
 			
 			current_image = image_index;
 			$( "ul#files-container li:nth-child("+(current_image+1)+")" ).addClass( "active" );
-			$("#target").attr('src', 'ann_img?path=' + the_json[current_image].file);
+			$("#target").attr('src', 'ann_img?path=' + the_json[current_image].file  + '&opa=' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5));
 			
 			
 			
